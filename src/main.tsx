@@ -14,7 +14,7 @@ import Publish from "./Pages/widget/Pages/publish.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/create",
+    path: "/",
     element: <Create />,
   },
   {
