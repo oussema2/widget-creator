@@ -7,15 +7,17 @@ interface WidgetState {
   loading: boolean;
   error: string | null;
 }
-const VIDEOS = [
-  "https://embedsocial.com/admin/story-cdn/17841436207691601/18008154899101073_video.mp4#t=0.001",
-  "https://embedsocial.com/admin/story-cdn/17841436207691601/18192166051282944_video.mp4#t=0.001",
-  "https://embedsocial.com/admin/story-cdn/17841436207691601/18009093878463707_video.mp4#t=0.001",
-  "https://embedsocial.com/admin/story-cdn/17841436207691601/17870659277976401_video.mp4#t=0.001",
-  "https://embedsocial.com/admin/story-cdn/17841436207691601/17890077965932625_video.mp4#t=0.001",
-  "https://embedsocial.com/admin/story-cdn/17841436207691601/18027252673940178_video.mp4#t=0.001",
-  "https://embedsocial.com/admin/story-cdn/17841436207691601/18036960856813350_video.mp4#t=0.001",
-];
+
+export const dummyVideo: Video = {
+  category: "",
+  callToAction: null,
+  source: "",
+  quote: "",
+  question: "",
+  recorder: { job: "", name: "" },
+  thumbnail: "",
+};
+
 const initialState: WidgetState = {
   data: {
     _id: "",
@@ -32,14 +34,7 @@ const initialState: WidgetState = {
       position: "Top-Left",
     },
     position: "Right",
-    videos: VIDEOS.map((video: string) => ({
-      category: "",
-      callToAction: null,
-      source: video,
-      quote: "",
-      question: "",
-      recorder: { job: "", name: "" },
-    })),
+    videos: [],
   },
   error: null,
   loading: false,
@@ -57,6 +52,19 @@ const initialWidgetSlice = createSlice({
     },
     setVideos: (state, action: PayloadAction<Video[]>) => {
       state.data.videos = action.payload;
+    },
+    pushVideo: (state, action: PayloadAction<Video>) => {
+      state.data.videos = [...state.data.videos, action.payload];
+    },
+    removeVideo: (state, action: PayloadAction<string>) => {
+      console.log(
+        [...state.data.videos].filter(
+          (video) => video.source === action.payload
+        )
+      );
+      state.data.videos = state.data.videos.filter(
+        (video) => video.source !== action.payload
+      );
     },
   },
   extraReducers: (builder) => {
@@ -80,6 +88,6 @@ const initialWidgetSlice = createSlice({
   },
 });
 
-export const { setTitle, setVideos, setDescription } =
+export const { setTitle, setVideos, setDescription, pushVideo, removeVideo } =
   initialWidgetSlice.actions;
 export default initialWidgetSlice.reducer;

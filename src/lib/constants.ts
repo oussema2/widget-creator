@@ -1,5 +1,5 @@
 export const API_URL = "https://widget-backend.vercel.app/api";
-//export  const API_URL = "http://localhost:4444/api";
+// export const API_URL = "http://localhost:4444/api";
 import {
   LogoPosition,
   WidgetType,
@@ -36,4 +36,9 @@ export const WIDGET_TYPE: WidgetTypeAttribute = {
   Modal: "Modal",
   PopUp: "PopUp",
   Story: "Story",
+};
+
+export type IconProps = {
+  fill?: string;
+  size?: number;
 };

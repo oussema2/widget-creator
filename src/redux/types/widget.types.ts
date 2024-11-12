@@ -30,6 +30,7 @@ export type LogoPosition =
 
 export interface Video {
   category: string;
+  thumbnail: string;
   callToAction: CallToAction | null;
   source: string;
   quote: string;

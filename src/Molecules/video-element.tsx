@@ -28,6 +28,7 @@ const VideoElement: FC<VideoElementProps> = ({
   logo,
   font,
   frameColor,
+  thumbnail,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   return (
@@ -58,6 +59,7 @@ const VideoElement: FC<VideoElementProps> = ({
         </div>
         <video
           src={source}
+          poster={thumbnail}
           className=" rounded-[16px]   w-full object-cover max-h-full h-full"
         />
         {quote && (

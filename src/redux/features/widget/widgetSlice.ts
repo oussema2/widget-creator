@@ -42,6 +42,7 @@ const initialState: WidgetState = {
         quote: "",
         question: "",
         recorder: { job: "", name: "" },
+        thumbnail: "",
       },
     ],
   },
@@ -70,6 +71,7 @@ const widgetSlice = createSlice({
             recorder: { job: "", name: "" },
             quote: "",
             question: "",
+            thumbnail: video.thumbnail,
           };
         }),
       };

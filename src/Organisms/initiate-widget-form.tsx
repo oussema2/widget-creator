@@ -16,6 +16,9 @@ import {
   selectLoadingError,
 } from "@/redux/features/initialwidget/initialwidgetSelectors";
 import {
+  dummyVideo,
+  pushVideo,
+  removeVideo,
   setDescription,
   setTitle,
 } from "@/redux/features/initialwidget/initialwidgetSlice";
@@ -30,6 +33,8 @@ const InitiateWidgetForm = () => {
   const { loading } = useSelector(selectLoadingError);
   const navigate = useNavigate();
   const [videos, setvideos] = useState<any[]>([]);
+  const [playedVideoIndex, setplayedVideoIndex] = useState(-1);
+  console.log(initialwidget);
   useEffect(() => {
     (async () => {
       const response = await axios.get(
@@ -83,7 +88,9 @@ const InitiateWidgetForm = () => {
       />
       <Dialog>
         <DialogTrigger className="text-white">Choose Videos</DialogTrigger>
-        <DialogContent>
+        <DialogContent
+          className={"overflow-y-scroll max-h-[700px] max-w-[50%]"}
+        >
           <DialogHeader>
             <DialogTitle>Choose Videos</DialogTitle>
           </DialogHeader>
@@ -109,9 +116,29 @@ const InitiateWidgetForm = () => {
               />
             </div>
           </div> */}
-          <div className="w-full flex flex-row items-center justify-start gap-[16px] flex-wrap">
-            {videos.map((video) => (
-              <VideoPickerElement options={video} />
+          <div className="w-full grid grid-cols-4  items-center justify-start gap-[16px] flex-wrap">
+            {videos.map((video, index) => (
+              <VideoPickerElement
+                isChecked={
+                  initialwidget.videos.filter(
+                    (videoX) => videoX.source === video.video
+                  ).length > 0
+                }
+                pushVideo={() =>
+                  dispatch(
+                    pushVideo({
+                      ...dummyVideo,
+                      source: video.video,
+                      thumbnail: video.thumbnail,
+                    })
+                  )
+                }
+                removeVideo={() => dispatch(removeVideo(video.video))}
+                pauseVideo={() => setplayedVideoIndex(-1)}
+                isVideoPlaying={index === playedVideoIndex}
+                playVideo={() => setplayedVideoIndex(index)}
+                options={video}
+              />
             ))}
           </div>
         </DialogContent>
