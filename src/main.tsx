@@ -11,11 +11,16 @@ import BrandSettings from "./Pages/widget/Pages/brand-settings.tsx";
 import Details from "./Pages/widget/Pages/details.tsx";
 import store from "./redux/app/store.ts";
 import Publish from "./Pages/widget/Pages/publish.tsx";
+import WidgetMain from "./widget/widget-main.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Create />,
+  },
+  {
+    path: "/preview",
+    element: <WidgetMain />,
   },
   {
     path: "/initiate",
