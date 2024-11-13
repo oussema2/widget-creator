@@ -11,7 +11,7 @@ import BrandSettings from "./Pages/widget/Pages/brand-settings.tsx";
 import Details from "./Pages/widget/Pages/details.tsx";
 import store from "./redux/app/store.ts";
 import Publish from "./Pages/widget/Pages/publish.tsx";
-import WidgetMain from "./widget/widget-main.tsx";
+import WidgetEntry from "./widget/Components/Widget.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/preview/:id",
-    element: <WidgetMain />,
+    element: <WidgetEntry />,
   },
   {
     path: "/initiate",
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById("cliquify-widget")!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />

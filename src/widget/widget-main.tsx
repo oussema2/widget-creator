@@ -1,11 +1,13 @@
+import store from "@/redux/app/store";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
 import WidgetEntry from "./Components/Widget";
 
-const WidgetMain = () => {
-  return (
-    <div id="cliquify-widget">
+createRoot(document.getElementById("cliquify-widget")!).render(
+  <StrictMode>
+    <Provider store={store}>
       <WidgetEntry />
-    </div>
-  );
-};
-
-export default WidgetMain;
+    </Provider>
+  </StrictMode>
+);

@@ -1,4 +1,3 @@
-// Widget.js
 import { ReactElement, useEffect, useState } from "react";
 
 import { WidgetType } from "@/redux/types/widget.types";
@@ -41,7 +40,6 @@ const WidgetEntry = () => {
   if (!Components[widgetData.type as WidgetType]) {
     return null;
   }
-  // return <h1>Hello</h1>;
 
   return Components[widgetData.type as WidgetType];
 };
