@@ -1,20 +1,24 @@
 import { Button } from "@/components/ui/button";
+import { areObjectsEqual } from "@/lib/utils";
 import VideoElement from "@/Molecules/video-element";
 import { AppDispatch } from "@/redux/app/store";
 import {
+  selectOldData,
   selectVideoIndex,
   selectWidget,
 } from "@/redux/features/widget/widgetSelectors";
 import { setSelectedVideo } from "@/redux/features/widget/widgetSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 const VideosPreviews = () => {
   const widgetData = useSelector(selectWidget);
+  const location = useLocation();
   const params = useParams();
   const dispatch = useDispatch<AppDispatch>();
+  const oldData = useSelector(selectOldData);
   const selectedVideo = useSelector(selectVideoIndex);
-  console.log(selectedVideo);
+  console.log(location.pathname.split("/")[3]);
   if (!widgetData) {
     return <p>Loading</p>;
   }
@@ -35,11 +39,19 @@ const VideosPreviews = () => {
         />
         {/* ))} */}
       </div>
-      <Button className="mt-4 w-full rounded-full">
+      {location.pathname.split("/")[3] === "publish" && (
         <Link target="_blank" to={`/preview/${params.id}`}>
-          preview
+          <Button
+            disabled={!areObjectsEqual(widgetData, oldData)}
+            className="mt-4 w-full rounded-full"
+          >
+            preview
+          </Button>
         </Link>
-      </Button>
+      )}
+      {!areObjectsEqual(widgetData, oldData) && (
+        <p>Submit Changes to see previw</p>
+      )}
     </div>
   );
 };

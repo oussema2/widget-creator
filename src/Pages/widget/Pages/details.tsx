@@ -1,4 +1,5 @@
 import {
+  selectOldData,
   selectVideoIndex,
   selectWidget,
 } from "@/redux/features/widget/widgetSelectors";
@@ -28,9 +29,11 @@ import VideosBreadCurmb from "@/Molecules/videos-breadcrumb";
 
 const Details = () => {
   const data = useSelector(selectWidget);
+  const oldData = useSelector(selectOldData);
   const navigate = useNavigate();
   const selectedVideo = useSelector(selectVideoIndex);
   const dispatch = useDispatch<AppDispatch>();
+  console.log(data, oldData);
   return (
     <div className="h-full overflow-y-auto w-full p-[32px] ">
       <div className="w-full flex flex-col gap-[32px] items-start justify-start">

@@ -15,3 +15,5 @@ export const selectBrandLoading = (state: RootState) =>
 
 export const selectScriptDisplayed = (state: RootState) =>
   state.widget.scriptGenerated;
+
+export const selectOldData = (state: RootState) => state.widget.oldData;

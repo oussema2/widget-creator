@@ -15,6 +15,7 @@ type WidgetState = {
   selectedVideo: number;
   loadingBrand: boolean;
   scriptGenerated: boolean;
+  oldData: Widget | null;
 };
 
 const initialState: WidgetState = {
@@ -51,6 +52,7 @@ const initialState: WidgetState = {
   selectedVideo: 0,
   loadingBrand: false,
   scriptGenerated: false,
+  oldData: null,
 };
 
 const widgetSlice = createSlice({
@@ -190,6 +192,7 @@ const widgetSlice = createSlice({
       .addCase(fetchWidget.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.data = action.payload; // Store the created data
+        state.oldData = action.payload;
       })
       .addCase(fetchWidget.rejected, (state, action) => {
         state.loading = false;
@@ -201,7 +204,8 @@ const widgetSlice = createSlice({
       })
       .addCase(updateWidget.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
-        state.data = { ...action.payload, brand: state.data.brand }; // Store the created data
+        state.data = { ...action.payload, brand: state.data.brand };
+        state.oldData = { ...action.payload, brand: state.data.brand }; // Store the created data
       })
       .addCase(updateWidget.rejected, (state, action) => {
         state.loading = false;
