@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import VideoElement from "@/Molecules/video-element";
 import { AppDispatch } from "@/redux/app/store";
 import {
@@ -7,8 +8,10 @@ import {
 import { setSelectedVideo } from "@/redux/features/widget/widgetSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 const VideosPreviews = () => {
   const widgetData = useSelector(selectWidget);
+  const params = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const selectedVideo = useSelector(selectVideoIndex);
   console.log(selectedVideo);
@@ -32,6 +35,11 @@ const VideosPreviews = () => {
         />
         {/* ))} */}
       </div>
+      <Button className="mt-4 w-full rounded-full">
+        <Link target="_blank" to={`/preview/${params.id}`}>
+          preview
+        </Link>
+      </Button>
     </div>
   );
 };

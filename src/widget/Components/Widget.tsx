@@ -6,16 +6,19 @@ import axios from "axios";
 import WidgetPopUp from "./Containers/widget-popup";
 import WidgetStory from "./Containers/widget-story";
 import WidgetWithModal from "./Containers/widget-with-modal";
+import { useParams } from "react-router-dom";
 const WidgetEntry = () => {
   const [widgetData, setwidgetData] = useState<any>();
+  const params = useParams();
   useEffect(() => {
     (async () => {
-      // const element = document.getElementById("widget-id");
-      // const attribute = element
-      //   ? element.getAttribute("data-widget-id")
-      //   : "67313bdc99d513fdc0ed1808";
+      const element = document.getElementById("widget-id");
+
+      const attribute = element
+        ? element.getAttribute("data-widget-id")
+        : params.id;
       const response = await axios.get(
-        `https://widget-backend.vercel.app/api/widgets/673407e42cc98859e8975135`
+        `https://widget-backend.vercel.app/api/widgets/${attribute}`
       );
       if (response.data) {
         setwidgetData(response.data);

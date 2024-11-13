@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <Create />,
   },
   {
-    path: "/preview",
+    path: "/preview/:id",
     element: <WidgetMain />,
   },
   {
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById("root")!).render(
+createRoot(document.getElementById("cliquify-widget")!).render(
   <StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
