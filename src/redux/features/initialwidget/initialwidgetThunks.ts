@@ -15,6 +15,7 @@ export const fetchFeatureAData = createAsyncThunk(
 export const createInitialWidget = createAsyncThunk(
   "widget/initiate",
   async (initialWidget: Widget, { rejectWithValue }) => {
+    console.log(initialWidget);
     try {
       const response = await api.post("/widgets/initiate", initialWidget);
       return response.data;

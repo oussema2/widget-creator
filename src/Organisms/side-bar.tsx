@@ -19,7 +19,6 @@ const sideBarPages: { title: string; link: string }[] = [
 
 const AppSidebar = () => {
   const location = useLocation().pathname.split("/")[3];
-  console.log(location);
   return (
     <Sidebar>
       <SidebarContent>

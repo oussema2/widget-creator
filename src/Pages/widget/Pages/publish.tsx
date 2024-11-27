@@ -69,7 +69,7 @@ const Publish = () => {
           onClick={() => {
             dispatch(updateWidget(widget)).then((result) => {
               if (updateWidget.fulfilled.match(result)) {
-                navigate(`/widget/${result.payload._id}/publish`);
+                navigate(`/widget/${result.payload.id}/publish`);
               }
             });
           }}

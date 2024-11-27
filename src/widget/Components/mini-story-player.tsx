@@ -2,6 +2,7 @@ import { Video } from "@/redux/types/widget.types";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Arrow, Dash } from "../icons";
+import { VIDEO_URL } from "@/lib/constants";
 
 const MiniStoryPlayer = ({
   setIsCostumePlayerShowed,
@@ -145,7 +146,7 @@ const MiniStoryPlayer = ({
                   videoRefs.current[index] = el;
                 }
               }}
-              src={src.source}
+              src={VIDEO_URL + src.source}
               playsInline
               autoPlay
               muted

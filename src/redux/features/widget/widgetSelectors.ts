@@ -17,3 +17,13 @@ export const selectScriptDisplayed = (state: RootState) =>
   state.widget.scriptGenerated;
 
 export const selectOldData = (state: RootState) => state.widget.oldData;
+
+export const selectSelectedVideo = (state: RootState) =>
+  state.widget.data.videos[state.widget.selectedVideo];
+
+export const selectCaptionState = (state: RootState) => ({
+  loading: state.widget.captionLoading,
+  progress: state.widget.captionProgress,
+  isGenerationEnd: state.widget.isGenerationEnd,
+  isGenerating: state.widget.isGenerating,
+});

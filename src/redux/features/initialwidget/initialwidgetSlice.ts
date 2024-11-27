@@ -16,11 +16,29 @@ export const dummyVideo: Video = {
   question: "",
   recorder: { job: "", name: "" },
   thumbnail: "",
+  videoPosition: [50],
+  dimensions: { height: 0, width: 0 },
+  aspectRatio: "Portrait",
+  caption: {
+    fileName: "",
+    id: "",
+    url: "",
+    backgroundColor: "black",
+    color: "white",
+    segments: [],
+    size: [18],
+    template: "ALI",
+  },
+  baseDuration: 0,
+  duration: 0,
+  end: 0,
+  start: 0,
+  id: 0,
 };
 
 const initialState: WidgetState = {
   data: {
-    _id: "",
+    id: "",
     description: "",
     callToAction: null,
     brand: {},
@@ -56,12 +74,8 @@ const initialWidgetSlice = createSlice({
     pushVideo: (state, action: PayloadAction<Video>) => {
       state.data.videos = [...state.data.videos, action.payload];
     },
+
     removeVideo: (state, action: PayloadAction<string>) => {
-      console.log(
-        [...state.data.videos].filter(
-          (video) => video.source === action.payload
-        )
-      );
       state.data.videos = state.data.videos.filter(
         (video) => video.source !== action.payload
       );

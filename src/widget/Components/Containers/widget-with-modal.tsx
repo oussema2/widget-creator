@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SaveSmile } from "../../icons/save-smile";
 import ModalWidgetContent from "../modal-widget-content";
 import VideoPlayer from "../video-player";
+import { VIDEO_URL } from "@/lib/constants";
 
 const WidgetWithModal = ({ options }: { options: any }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +43,7 @@ const WidgetWithModal = ({ options }: { options: any }) => {
           </div>
           <div style={{ position: "absolute", bottom: "16px", right: "16px" }}>
             <VideoPlayer
-              url={options.videos[0].source}
+              url={VIDEO_URL + options.videos[0].source}
               text={options.title}
               key="second"
               setIsCostumePlayerShowed={() => setIsModalOpen(true)}

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Arrow } from "../icons/arrows";
+import { VIDEO_URL } from "@/lib/constants";
 const XlStoryPlayer = ({
   closeModal,
   currentIndex,
@@ -206,7 +207,7 @@ const XlStoryPlayer = ({
                     videoRefs.current[index] = el;
                   }
                 }} // Store the video reference
-                src={video.source}
+                src={VIDEO_URL + video.source}
                 key={index}
                 playsInline
                 style={{

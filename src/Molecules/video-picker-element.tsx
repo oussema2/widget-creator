@@ -20,12 +20,11 @@ const VideoPickerElement = ({
   isVideoPlaying: boolean;
 }) => {
   return (
-    <div className="flex-1 h-[250px] group rounded-[10px] relative">
+    <div className="flex-1 h-auto group rounded-[10px] relative">
       <div className="absolute top-[16px] left-[16px] p-[4px] bg-[white] rounded-sm">
         <Checkbox
           checked={isChecked}
           onCheckedChange={(check) => {
-            console.log(check);
             if (check) {
               pushVideo();
             } else {
@@ -38,7 +37,6 @@ const VideoPickerElement = ({
         {isVideoPlaying ? (
           <div
             onClick={() => {
-              console.log("clicked");
               pauseVideo();
             }}
           >
@@ -57,14 +55,14 @@ const VideoPickerElement = ({
           playsInline
           autoPlay
           muted={false}
-          src={options.video}
-          className="w-full h-full object-cover"
+          src={`${options.video_url}`}
+          className="w-full h-full object-cover min-h-[400px] min-w-[200px]"
         />
       ) : (
         <img
           onClick={() => playVideo()}
-          src={options.thumbnail}
-          className="w-full h-full object-cover cursor-pointer"
+          src={`${options.thumbnail}`}
+          className="w-full h-full object-cover cursor-pointer min-h-[400px] min-w-[250px]"
         />
       )}
     </div>

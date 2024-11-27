@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Quote } from "@/icons";
-import { POSITION_ATTRIBUTES } from "@/lib/constants";
+import { AspectRatioDimenstions, POSITION_ATTRIBUTES } from "@/lib/constants";
+import AliTemplate from "@/Organisms/captions-templates/ali-template";
+import MaltaTemplate from "@/Organisms/captions-templates/malta-template";
+import UmiTemplate from "@/Organisms/captions-templates/umi-template";
 import { AppDispatch } from "@/redux/app/store";
+import { selectSelectedVideo } from "@/redux/features/widget/widgetSelectors";
 import { initiateCallToAction } from "@/redux/features/widget/widgetSlice";
 import { FontType, LogoPosition, Video } from "@/redux/types/widget.types";
-import { FC } from "react";
-import { useDispatch } from "react-redux";
+import { FC, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 type VideoElementProps = Video & {
   isSelected: boolean;
@@ -14,6 +18,7 @@ type VideoElementProps = Video & {
   logo: string;
   font: FontType;
   frameColor: string;
+  selectedVideo: number;
 };
 
 const VideoElement: FC<VideoElementProps> = ({
@@ -28,17 +33,32 @@ const VideoElement: FC<VideoElementProps> = ({
   logo,
   font,
   frameColor,
-  thumbnail,
+  videoPosition,
+  aspectRatio,
+  caption,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const video = useSelector(selectSelectedVideo);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   return (
     <div
       onClick={() => selectVideo()}
       style={{ backgroundColor: frameColor || "red" }}
-      className={`w-full min-h-[600px] cursor-pointer relative rounded-[16px] px-[12px] py-[24px] ${
+      className={`w-[350px] cursor-pointer relative rounded-[16px] px-[12px] py-[24px] ${
         isSelected ? "border-[5px] border-solid border-blue-500" : ""
       }`}
     >
+      <style>
+        {`
+          video::cue {
+            font-size: ${caption.size}px;
+            color: ${caption.color};
+            background: ${caption.backgroundColor};
+            padding: 5px;
+            border-radius: 5px;
+          }
+        `}
+      </style>
       <div className="my-[24px] relative pl-[16px] overflow-hidden ">
         <div className="absolute left-0 top-0 h-full w-1 bg-[white] rounded-[8px]" />
         <p
@@ -52,16 +72,41 @@ const VideoElement: FC<VideoElementProps> = ({
           {question ? question : "Video Question..."}
         </p>
       </div>
-      <div className="w-full max-h-[400px] h-[400px] relative">
+      <div className="w-full  relative flex flex-row items-center justify-center">
         {" "}
-        <div style={POSITION_ATTRIBUTES[position]} className="absolute ">
-          <img width={"50px"} height={"50px"} src={logo} />
+        <div
+          style={{ ...AspectRatioDimenstions[aspectRatio] }}
+          className="relative rounded-[16px]   w-full h-[450px] aspect-[9/16]  overflow-hidden bg-black"
+        >
+          {video.caption && video.caption.url && isVideoPlaying && (
+            // <track
+            //   ref={trackRef}
+            //   src={UPLOAD_URL + video.caption.url}
+            //   kind="subtitles"
+            //   srcLang="en"
+            //   label="English"
+            //   default
+            // />
+            <div className="absolute bottom-24 left-0 w-full z-[100]">
+              {caption.template === "ALI" && <AliTemplate />}
+              {caption.template === "UMI" && <UmiTemplate />}
+              {caption.template === "MALTA" && <MaltaTemplate />}
+            </div>
+          )}
+          <video
+            crossOrigin="anonymous"
+            src={`${source}`}
+            controls
+            onPlay={() => setIsVideoPlaying(true)}
+            onEnded={() => setIsVideoPlaying(false)}
+            style={{
+              objectPosition: `${videoPosition}% ${videoPosition}%`,
+            }}
+            className=" rounded-[16px] h-full object-cover w-full  "
+          >
+            Your browser does not support the video tag.
+          </video>
         </div>
-        <video
-          src={source}
-          poster={thumbnail}
-          className=" rounded-[16px]   w-full object-cover max-h-full h-full"
-        />
         {quote && (
           <div className="w-full h-[150px] absolute bottom-[16px] left-0 p-[16px]">
             <div className="w-full h-full flex flex-row items-start ">
@@ -82,6 +127,9 @@ const VideoElement: FC<VideoElementProps> = ({
             </div>
           </div>
         )}
+        <div style={POSITION_ATTRIBUTES[position]} className="absolute ">
+          <img width={"50px"} height={"50px"} src={logo} />
+        </div>
       </div>
       <div className="w-full  py-[16px] h-full z-290 flex flex-col items-start justify-between gap-[16px]">
         <div className="w-full gap-[16px] flex flex-col items-start justify-start">

@@ -19,7 +19,7 @@ const VideosBreadCurmb = ({ videos }: { videos: Video[] }) => {
     <Breadcrumb>
       <BreadcrumbList>
         {videos.map((_: Video, index: number) => (
-          <div className="flex flex-row items-center justify-start">
+          <div key={index} className="flex flex-row items-center justify-start">
             <BreadcrumbItem
               className="cursor-pointer"
               onClick={() => dispatch(setSelectedVideo(index))}

@@ -12,11 +12,16 @@ import Details from "./Pages/widget/Pages/details.tsx";
 import store from "./redux/app/store.ts";
 import Publish from "./Pages/widget/Pages/publish.tsx";
 import WidgetEntry from "./widget/Components/Widget.tsx";
+import Trim from "./Pages/trim.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Create />,
+  },
+  {
+    path: "/trim/:id",
+    element: <Trim />,
   },
   {
     path: "/preview/:id",

@@ -1,5 +1,10 @@
+import { AspectRatio } from "@/lib/constants";
+import AliTemplate from "@/Organisms/captions-templates/ali-template";
+import MaltaTemplate from "@/Organisms/captions-templates/malta-template";
+import UmiTemplate from "@/Organisms/captions-templates/umi-template";
+
 export interface Widget {
-  _id: string;
+  id: string;
   videos: Video[];
   title: string;
   description: string;
@@ -29,6 +34,7 @@ export type LogoPosition =
   | "Bottom-Center";
 
 export interface Video {
+  id: number;
   category: string;
   thumbnail: string;
   callToAction: CallToAction | null;
@@ -36,6 +42,30 @@ export interface Video {
   quote: string;
   question: string;
   recorder: VideoRecorder;
+  videoPosition: number[];
+  dimensions: Dimensions;
+  aspectRatio: AspectRatio;
+  caption: Caption;
+  start: number;
+  end: number;
+  baseDuration: number;
+  duration: number;
+}
+
+export interface Caption {
+  fileName: string;
+  id: string;
+  url: string;
+  segments: any[];
+  size: number[];
+  color: string;
+  backgroundColor: string;
+  template: CaptionTemplate;
+}
+
+export interface Dimensions {
+  width: number;
+  height: number;
 }
 
 export type WidgetType = "PopUp" | "Modal" | "Story" | "Iframe";
@@ -80,4 +110,20 @@ export type TextType = {
   font: string;
   fontSize: number;
   color: string;
+};
+
+export type CaptionTemplate = "UMI" | "MALTA" | "ALI";
+
+export const CaptionTemplateAttributes: Record<CaptionTemplate, string> = {
+  ALI: "ALI",
+  MALTA: "MALTA",
+  UMI: "UMI",
+};
+export const CaptionTemplateComponent: Record<
+  CaptionTemplate,
+  () => JSX.Element
+> = {
+  ALI: AliTemplate,
+  MALTA: MaltaTemplate,
+  UMI: UmiTemplate,
 };

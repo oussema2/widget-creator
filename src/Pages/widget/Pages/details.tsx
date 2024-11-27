@@ -1,42 +1,56 @@
+import VideosBreadCurmb from "@/Molecules/videos-breadcrumb";
+import VideoCaption from "@/Organisms/video-forms/video-caption";
+import VideoDetails from "@/Organisms/video-forms/video-details";
+import VideoStyle from "@/Organisms/video-forms/video-style";
+import { VideoTrim } from "@/Organisms/video-forms/video-trim";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsProps } from "@/lib/constants";
+import { AppDispatch } from "@/redux/app/store";
 import {
-  selectOldData,
   selectVideoIndex,
   selectWidget,
 } from "@/redux/features/widget/widgetSelectors";
-import { useSelector } from "react-redux";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/app/store";
 import {
-  setCallToActionLink,
-  setCallToActionTitle,
-  setRemoveCallToAction,
   setSelectedVideo,
-  setVideoCategory,
-  setVideoQuestion,
-  setVideoQuote,
-  setVideoRecorderJob,
-  setVideoRecorderName,
-  setWidgetDescription,
-  setWidgetTitle,
+  setVideoUrl,
 } from "@/redux/features/widget/widgetSlice";
 import { updateWidget } from "@/redux/features/widget/widgetThunks";
-import { Button } from "@/components/ui/button";
-import { isCallToAction } from "@/lib/typeCheks";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import VideosBreadCurmb from "@/Molecules/videos-breadcrumb";
 
 const Details = () => {
   const data = useSelector(selectWidget);
-  const oldData = useSelector(selectOldData);
   const navigate = useNavigate();
   const selectedVideo = useSelector(selectVideoIndex);
   const dispatch = useDispatch<AppDispatch>();
-  console.log(data, oldData);
+  const TABS: TabsProps[] = [
+    {
+      title: "Details",
+      value: "details",
+      component: <VideoDetails />,
+    },
+    {
+      title: "Trim",
+      value: "trim",
+      component: <VideoTrim />,
+    },
+    {
+      title: "Caption",
+      value: "caption",
+      component: <VideoCaption />,
+    },
+    {
+      title: "Style",
+      value: "style",
+      component: <VideoStyle />,
+    },
+  ];
+  console.log(data);
   return (
     <div className="h-full overflow-y-auto w-full p-[32px] ">
-      <div className="w-full flex flex-col gap-[32px] items-start justify-start">
+      {/* <div className="w-full flex flex-col gap-[32px] items-start justify-start">
         <div className="flex flex-col gap-[16px]  justify-start items-start">
           <Label htmlFor="title">Widget Title</Label>
           <Input
@@ -59,8 +73,8 @@ const Details = () => {
             value={data.description || ""}
           />
         </div>
-      </div>
-      {data.callToAction && isCallToAction(data.callToAction) ? (
+      </div> */}
+      {/* {data.callToAction && isCallToAction(data.callToAction) ? (
         <div className="flex flex-col w-full relative items-start justify-start gap-[32px] mt-[16px]">
           <p>Video Call To Action (link)</p>{" "}
           <div className="flex flex-col gap-[16px]  justify-start items-start">
@@ -92,76 +106,36 @@ const Details = () => {
             Remove
           </Button>
         </div>
-      ) : null}
-      <div className="mt-8">
+      ) : null} */}
+      <div className="mt-8 w-full">
+        <div className="w-full flex flex-row items-center justify-center">
+          <VideosBreadCurmb videos={data.videos} />
+        </div>
+
         {selectedVideo > -1 ? (
           <div className="flex w-full flex-col items-start justify-center mt-[48px] gap-[32px]">
-            <VideosBreadCurmb videos={data.videos} />
-            <div className="flex flex-col items-start justify-start gap-[32px] mt-[12px]">
-              <p>Video Recorder Info</p>{" "}
-              <div className="flex flex-col gap-[16px]  justify-start items-start">
-                <Label htmlFor="video-name">Recorder Name</Label>
-                <Input
-                  onChange={(e) =>
-                    dispatch(setVideoRecorderName(e.target.value))
-                  }
-                  type="text"
-                  name="video-name"
-                  className="border-[black]"
-                  placeholder="Enter video title"
-                  value={data.videos[selectedVideo].recorder.name || ""}
-                />
-              </div>
-              <div className="flex flex-col gap-[16px]  justify-start items-start">
-                <Label htmlFor="recorder-post">Recorder Post</Label>
-                <Input
-                  onChange={(e) =>
-                    dispatch(setVideoRecorderJob(e.target.value))
-                  }
-                  type="text"
-                  name="recorder-post"
-                  className="border-[black]"
-                  placeholder="Enter widget title"
-                  value={data.videos[selectedVideo].recorder.job || ""}
-                />
-              </div>
+            <p className="text-[24px]">Video {selectedVideo + 1}</p>{" "}
+            <div className="flex flex-row items-center justify-start">
+              <Input onChange={(e) => dispatch(setVideoUrl(e.target.value))} />
+              <Button>Update</Button>
             </div>
-            <div className="flex flex-col items-start justify-start gap-[32px] mt-[12px]">
-              <p>Video content Information</p>
-              <div className="flex flex-col gap-[16px]  justify-start items-start">
-                <Label htmlFor="video-category">Category</Label>
-                <Input
-                  onChange={(e) => dispatch(setVideoCategory(e.target.value))}
-                  type="text"
-                  name="video-category"
-                  className="border-[black]"
-                  placeholder="Enter widget title"
-                  value={data.videos[selectedVideo].category || ""}
-                />
-              </div>
-              <div className="flex flex-col gap-[16px]  justify-start items-start">
-                <Label htmlFor="video-quote">Video Quote</Label>
-                <Input
-                  onChange={(e) => dispatch(setVideoQuote(e.target.value))}
-                  type="text"
-                  name="video-quote"
-                  className="border-[black]"
-                  placeholder="Enter widget title"
-                  value={data.videos[selectedVideo].quote || ""}
-                />
-              </div>
-              <div className="flex flex-col gap-[16px]  justify-start items-start">
-                <Label htmlFor="video-question">Video Question</Label>
-                <Input
-                  onChange={(e) => dispatch(setVideoQuestion(e.target.value))}
-                  type="text"
-                  name="video-question"
-                  className="border-[black]"
-                  placeholder="Enter widget title"
-                  value={data.videos[selectedVideo].question || ""}
-                />
-              </div>
-            </div>
+            <Tabs
+              defaultValue="details"
+              className="w-full flex flex-col items-start  justify-start"
+            >
+              <TabsList className="bg-[white]">
+                {TABS.map((tab, index) => (
+                  <TabsTrigger key={index} value={tab.value}>
+                    {tab.title}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              {TABS.map((el, index) => (
+                <TabsContent key={index} value={el.value}>
+                  {el.component}
+                </TabsContent>
+              ))}
+            </Tabs>
           </div>
         ) : (
           <div className="mt-[48px] w-full flex flex-row items-center justify-center">
@@ -188,7 +162,7 @@ const Details = () => {
         onClick={() => {
           dispatch(updateWidget(data)).then((result) => {
             if (updateWidget.fulfilled.match(result)) {
-              navigate(`/widget/${result.payload._id}/appearance`);
+              navigate(`/widget/${result.payload.id}/appearance`);
             }
           });
         }}

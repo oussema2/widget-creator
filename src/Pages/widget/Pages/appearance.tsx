@@ -34,8 +34,8 @@ const Appearance = () => {
     return <p>Loading</p>;
   }
   return (
-    <div className="w-full flex flex-col items-start justify-start p-[32px] gap-[48px]">
-      <div className="flex flex-col items-start justify-start gap-[24px]">
+    <div className="w-full h-screen overflow-y-auto flex flex-col items-start justify-start p-[32px] gap-[48px] ">
+      <div className="flex flex-col  h-full items-start justify-start gap-[24px]">
         <p>Logo Options</p>
         <div className="flex flex-col items-stare justify-start gap-[16px]">
           <p>Choose Logo</p>
@@ -108,8 +108,9 @@ const Appearance = () => {
                 <SelectContent className="w-full">
                   <SelectGroup>
                     <SelectLabel>Choose Font</SelectLabel>
-                    {widget.brand.fonts.map((font: any) => (
+                    {widget.brand.fonts.map((font: any, index: number) => (
                       <SelectItem
+                        key={index}
                         style={{ fontFamily: font.family }}
                         value={font.family}
                       >
@@ -155,7 +156,7 @@ const Appearance = () => {
         onClick={() => {
           dispatch(updateWidget(widget)).then((result) => {
             if (updateWidget.fulfilled.match(result)) {
-              navigate(`/widget/${result.payload._id}/publish`);
+              navigate(`/widget/${result.payload.id}/publish`);
             }
           });
         }}

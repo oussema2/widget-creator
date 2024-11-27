@@ -5,6 +5,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  optimizeDeps: {
+    include: ["crypto-js"],
+  },
   build: {
     outDir: "dist", // Ensure Vercel looks in the correct folder
     rollupOptions: {

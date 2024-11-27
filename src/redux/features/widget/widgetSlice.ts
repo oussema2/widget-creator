@@ -5,9 +5,20 @@ import {
   Widget,
   WidgetType,
   WidgetPosition,
+  Caption,
+  Video,
+  CaptionTemplate,
 } from "@/redux/types/widget.types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchBrand, fetchWidget, updateWidget } from "./widgetThunks";
+import {
+  fetchBrand,
+  fetchCaptions,
+  fetchProgress,
+  fetchWidget,
+  generateCaption,
+  updateWidget,
+} from "./widgetThunks";
+import { AspectRatio } from "@/lib/constants";
 type WidgetState = {
   data: Widget;
   loading: boolean;
@@ -16,12 +27,16 @@ type WidgetState = {
   loadingBrand: boolean;
   scriptGenerated: boolean;
   oldData: Widget | null;
+  captionLoading: boolean;
+  captionProgress: number;
+  isGenerationEnd: boolean;
+  isGenerating: boolean;
 };
 
 const initialState: WidgetState = {
   data: {
     brand: {},
-    _id: "",
+    id: "",
     callToAction: null,
     description: "",
     type: "PopUp",
@@ -44,15 +59,37 @@ const initialState: WidgetState = {
         question: "",
         recorder: { job: "", name: "" },
         thumbnail: "",
+        videoPosition: [50],
+        dimensions: { height: 0, width: 0 },
+        aspectRatio: "Portrait",
+        caption: {
+          fileName: "",
+          id: "",
+          url: "",
+          size: [16],
+          segments: [],
+          color: "white",
+          backgroundColor: "black",
+          template: "ALI",
+        },
+        baseDuration: 0,
+        duration: 0,
+        end: 0,
+        id: 0,
+        start: 0,
       },
     ],
   },
   error: null,
   loading: false,
+  captionLoading: false,
+  captionProgress: 0,
   selectedVideo: 0,
   loadingBrand: false,
   scriptGenerated: false,
   oldData: null,
+  isGenerationEnd: false,
+  isGenerating: false,
 };
 
 const widgetSlice = createSlice({
@@ -74,6 +111,24 @@ const widgetSlice = createSlice({
             quote: "",
             question: "",
             thumbnail: video.thumbnail,
+            videoPosition: [50],
+            dimensions: { height: 0, width: 0 },
+            aspectRatio: "Portrait",
+            caption: {
+              fileName: "",
+              id: "",
+              url: "",
+              size: [16],
+              segments: [],
+              color: "white",
+              backgroundColor: "black",
+              template: "ALI",
+            },
+            baseDuration: 0,
+            duration: 0,
+            end: 0,
+            id: 0,
+            start: 0,
           };
         }),
       };
@@ -129,6 +184,12 @@ const widgetSlice = createSlice({
     setVideoRecorderJob: (state, action: PayloadAction<string>) => {
       state.data.videos[state.selectedVideo].recorder.job = action.payload;
     },
+    setVideoPosition: (state, action: PayloadAction<number[]>) => {
+      state.data.videos[state.selectedVideo].videoPosition = action.payload;
+    },
+    setVideoAspectRatio: (state, action: PayloadAction<AspectRatio>) => {
+      state.data.videos[state.selectedVideo].aspectRatio = action.payload;
+    },
     initiateCallToAction: (state) => {
       state.data.callToAction = { link: "", title: "" };
     },
@@ -166,6 +227,12 @@ const widgetSlice = createSlice({
         state.data.callToAction.link = action.payload;
       }
     },
+    setVideoUrl: (state, action: PayloadAction<string>) => {
+      state.data.videos[state.selectedVideo].source = action.payload;
+    },
+    setVideoCaption: (state, action: PayloadAction<Caption>) => {
+      state.data.videos[state.selectedVideo].caption = action.payload;
+    },
     setRemoveCallToAction: (state) => {
       state.data.callToAction = null;
     },
@@ -181,6 +248,22 @@ const widgetSlice = createSlice({
     showScript: (state) => {
       state.scriptGenerated = true;
     },
+    setVideoCaptionSize: (state, action: PayloadAction<number[]>) => {
+      state.data.videos[state.selectedVideo].caption.size = action.payload;
+    },
+    setVideoCaptionColor: (state, action: PayloadAction<string>) => {
+      state.data.videos[state.selectedVideo].caption.color = action.payload;
+    },
+    setVideoCaptionBackgroundColor: (state, action: PayloadAction<string>) => {
+      state.data.videos[state.selectedVideo].caption.backgroundColor =
+        action.payload;
+    },
+    setVideoCaptionTemplate: (
+      state,
+      action: PayloadAction<CaptionTemplate>
+    ) => {
+      state.data.videos[state.selectedVideo].caption.template = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -191,7 +274,30 @@ const widgetSlice = createSlice({
       })
       .addCase(fetchWidget.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
-        state.data = action.payload; // Store the created data
+        state.data = {
+          ...action.payload,
+          font: action.payload.font
+            ? action.payload.font
+            : { family: "", style: "", url: "" },
+          logo: action.payload.logo
+            ? action.payload.logo
+            : { position: "Top-Left", url: "" },
+          callToAction: action.payload.callToAction?.link
+            ? action.payload.callToAction
+            : { link: "", title: "" },
+          videos: action.payload.videos.map((video: Video) => ({
+            ...video,
+            videoPosition: video.videoPosition ? video.videoPosition : [50],
+            caption: {
+              ...video.caption,
+              size: [16],
+              color: "white",
+              backgroundColor: "black",
+            },
+          })),
+        }; // Store the created data
+        console.log(action.payload);
+        state.data.id = action.payload.id;
         state.oldData = action.payload;
       })
       .addCase(fetchWidget.rejected, (state, action) => {
@@ -222,6 +328,44 @@ const widgetSlice = createSlice({
       .addCase(fetchBrand.rejected, (state, action) => {
         state.loadingBrand = false;
         state.error = action.payload as string; // Set error message
+      })
+      .addCase(generateCaption.pending, (state) => {
+        state.captionLoading = true;
+        state.captionProgress = 0;
+        state.isGenerationEnd = false;
+        state.isGenerating = false;
+      })
+      .addCase(
+        generateCaption.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.data.videos[state.selectedVideo].caption = {
+            fileName: action.payload.fileName,
+            id: action.payload.id,
+            url: "",
+            segments: [],
+            size: [16],
+            color: "white",
+            backgroundColor: "black",
+            template: "ALI",
+          };
+          state.isGenerating = true;
+        }
+      )
+      .addCase(generateCaption.rejected, (state) => {
+        state.captionLoading = false;
+      })
+      .addCase(fetchProgress.fulfilled, (state, action: PayloadAction<any>) => {
+        state.captionProgress = action.payload.progress;
+        if (action.payload.progress >= 100) {
+          state.isGenerationEnd = true;
+          state.isGenerating = false;
+        }
+      })
+      .addCase(fetchCaptions.fulfilled, (state, action: PayloadAction<any>) => {
+        console.log(action.payload);
+        state.data.videos[state.selectedVideo].caption = action.payload.caption;
+
+        state.captionLoading = false;
       });
   },
 });
@@ -248,5 +392,13 @@ export const {
   setWidgetLayout,
   setWidgetType,
   showScript,
+  setVideoPosition,
+  setVideoAspectRatio,
+  setVideoUrl,
+  setVideoCaption,
+  setVideoCaptionSize,
+  setVideoCaptionColor,
+  setVideoCaptionBackgroundColor,
+  setVideoCaptionTemplate,
 } = widgetSlice.actions;
 export default widgetSlice.reducer;

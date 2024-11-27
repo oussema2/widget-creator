@@ -2,7 +2,7 @@ import { CallToAction, Widget } from "@/redux/types/widget.types";
 
 export function isInitialObject(obj: any): obj is Widget {
   return (
-    typeof obj._id === "string" &&
+    typeof obj.id === "string" &&
     typeof obj.title === "string" &&
     typeof obj.description === "string"
   );
