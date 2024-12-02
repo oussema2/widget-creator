@@ -10,6 +10,7 @@ import { API_URL } from "@/lib/constants";
 const WidgetEntry = () => {
   const [widgetData, setwidgetData] = useState<any>();
   const params = useParams();
+  console.log("runned");
   useEffect(() => {
     (async () => {
       const element = document.getElementById("widget-id");
