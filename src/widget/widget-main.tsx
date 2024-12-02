@@ -1,5 +1,9 @@
 // Ensure this is an ES module (if using `type="module"` in the script tag)
 
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import WidgetEntry from "./Components/Widget";
+
 // Interface for expected attributes in the <script> tag
 interface WidgetAttributes {
   widgetId?: string;
@@ -57,8 +61,8 @@ const initializeWidget = (): void => {
 // Initialize the widget on script load
 initializeWidget();
 
-// createRoot(document.getElementById("root")!).render(
-//   <StrictMode>
-//     <WidgetEntry />
-//   </StrictMode>
-// );
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <WidgetEntry />
+  </StrictMode>
+);
