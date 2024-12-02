@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Close } from "../icons/close";
-import { VIDEO_URL } from "@/lib/constants";
 
 const ModalWidgetContent = ({
   closeModal,
@@ -55,7 +54,7 @@ const ModalWidgetContent = ({
               loop
               playsInline
               muted={true}
-              src={VIDEO_URL + options.videos[0].source}
+              src={options.videos[0].source}
             />
             <div
               onClick={() => setShowInnerModal(false)}

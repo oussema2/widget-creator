@@ -11,6 +11,10 @@ export default defineConfig({
   build: {
     outDir: "dist", // Ensure Vercel looks in the correct folder
     rollupOptions: {
+      // input: {
+      //   main: "src/main.tsx",
+      //   specific: "src/widget/widget-main.tsx", // Point to an entry in the folder
+      // },
       output: {
         entryFileNames: "assets/[name].js", // for entry files
         chunkFileNames: "assets/[name].js", // for chunks

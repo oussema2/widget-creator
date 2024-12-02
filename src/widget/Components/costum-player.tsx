@@ -18,6 +18,7 @@ const CostumPlayer: React.FC<CostumPlayerProps> = ({
   logo,
   frameColor,
 }) => {
+  console.log(url);
   return (
     <motion.div
       initial={{ y: 50, opacity: 0 }}

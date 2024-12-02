@@ -2,7 +2,6 @@ import { useState } from "react";
 import { SaveSmile } from "../../icons/save-smile";
 import CostumPlayer from "../costum-player";
 import VideoPlayer from "../video-player";
-import { VIDEO_URL } from "@/lib/constants";
 
 const WidgetPopUp = ({ options }: { options: any }) => {
   const [isCostumePlayerShowed, setIsCostumePlayerShowed] = useState(false);
@@ -40,14 +39,14 @@ const WidgetPopUp = ({ options }: { options: any }) => {
               logo={options.logo.url}
               logoPosition={options.logo.position}
               frameColor={options.frameColor}
-              url={VIDEO_URL + options.videos[0].source}
+              url={options.videos[0].source}
               key="first"
               closePlayer={() => setIsCostumePlayerShowed(false)}
             />
           ) : (
             <VideoPlayer
               text={options.title}
-              url={VIDEO_URL + options.videos[0].source}
+              url={options.videos[0].source}
               key="second"
               setIsCostumePlayerShowed={() => setIsCostumePlayerShowed(true)}
             />

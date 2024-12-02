@@ -9,6 +9,7 @@ const VideoPlayer = ({
   url: string;
   text: string;
 }) => {
+  console.log(url);
   return (
     <div
       onClick={() => setIsCostumePlayerShowed()}
