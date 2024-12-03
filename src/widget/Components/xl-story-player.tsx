@@ -207,7 +207,7 @@ const XlStoryPlayer = ({
                     videoRefs.current[index] = el;
                   }
                 }} // Store the video reference
-                src={VIDEO_URL + video.source}
+                src={video.source}
                 key={index}
                 playsInline
                 style={{

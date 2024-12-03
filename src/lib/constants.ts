@@ -1,8 +1,8 @@
-// export const API_URL = "https://widget-backend.vercel.app/api";
-export const API_URL = "http://localhost:4444/api";
+export const API_URL = "https://widget-backend.vercel.app/api";
+// export const API_URL = "http://localhost:4444/api";
 export const VIDEO_URL = "https://cdn.thecliquify.co/";
-export const UPLOAD_URL = "http://localhost:4444/uploads";
-// export const UPLOAD_URL = "https://widget-backend.vercel.app/uploads";
+// export const UPLOAD_URL = "http://localhost:4444/uploads";
+export const UPLOAD_URL = "https://widget-backend.vercel.app/uploads";
 import {
   LogoPosition,
   WidgetPosition,
