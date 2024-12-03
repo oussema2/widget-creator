@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Arrow } from "../icons/arrows";
-import { VIDEO_URL } from "@/lib/constants";
 const XlStoryPlayer = ({
   closeModal,
   currentIndex,
