@@ -44,7 +44,7 @@ const router = createBrowserRouter([
 ]);
 const root = document.getElementById("root");
 const widget = document.getElementById("widget");
-if (root && !widget) {
+if (root) {
   console.log("entered 111");
   createRoot(root).render(
     <StrictMode>
@@ -53,9 +53,7 @@ if (root && !widget) {
       </Provider>
     </StrictMode>
   );
-}
-
-if (!root && widget) {
+} else if (!root && widget) {
   console.log("entered 222");
 
   createRoot(widget).render(
