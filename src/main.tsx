@@ -56,6 +56,8 @@ if (root && !widget) {
 }
 
 if (!root && widget) {
+  console.log("entered 222");
+
   createRoot(widget).render(
     <StrictMode>
       <WidgetEntry />
