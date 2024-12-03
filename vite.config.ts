@@ -20,9 +20,6 @@ export default defineConfig({
         chunkFileNames: "assets/[name].js", // for chunks
         assetFileNames: "assets/[name].[ext]", // for static assets
         // Define custom chunk names if necessary
-        manualChunks: {
-          "my-widget": ["src/widget/widget-main.tsx"],
-        },
       },
     },
   },

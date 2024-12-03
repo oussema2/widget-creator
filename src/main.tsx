@@ -42,11 +42,23 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+const root = document.getElementById("root");
+const widget = document.getElementById("widget");
+if (root && !widget) {
+  console.log("entered 111");
+  createRoot(root).render(
+    <StrictMode>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </StrictMode>
+  );
+}
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </StrictMode>
-);
+if (!root && widget) {
+  createRoot(widget).render(
+    <StrictMode>
+      <WidgetEntry />
+    </StrictMode>
+  );
+}
