@@ -89,6 +89,7 @@ const InitiateWidgetForm = () => {
             position: "Right",
             type: "PopUp",
             callToAction: null,
+            dimensions: { height: 0, width: 0 },
           });
         }
         // Navigate to a different route after successful API call

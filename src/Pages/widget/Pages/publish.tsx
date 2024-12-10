@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { WIDGET_POSTITIONS_ATTRIBUTES, WIDGET_TYPE } from "@/lib/constants";
 import { AppDispatch } from "@/redux/app/store";
 import {
@@ -6,8 +7,10 @@ import {
   selectWidget,
 } from "@/redux/features/widget/widgetSelectors";
 import {
+  setWidgetHeightDimension,
   setWidgetLayout,
   setWidgetPosition,
+  setWidgetWidthDimension,
   showScript,
 } from "@/redux/features/widget/widgetSlice";
 import { updateWidget } from "@/redux/features/widget/widgetThunks";
@@ -64,6 +67,36 @@ const Publish = () => {
               </div>
             ))}
           </div>
+          {widget.type === "Iframe" && (
+            <div className="w-full flex flex-col items-start justify-start gap-[32px]">
+              <p>Widget Dimensions</p>
+              <div className="w-full flex flex-row items-center justify-evenly gap-4">
+                <div className="flex-1 flex flex-col items-start justify-start gap-[16px] ">
+                  <p>Height</p>
+                  <Input
+                    placeholder="Enter Widget Height"
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      dispatch(setWidgetHeightDimension(e.target.value));
+                    }}
+                    type="number"
+                    value={widget.dimensions.height || undefined}
+                  />
+                </div>
+                <div className="flex-1 flex flex-col items-start justify-start gap-[16px] ">
+                  <p>Width</p>
+                  <Input
+                    onChange={(e) =>
+                      dispatch(setWidgetWidthDimension(e.target.value))
+                    }
+                    placeholder="Enter Widget Width"
+                    type="number"
+                    value={widget.dimensions.width || undefined}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <Button
           onClick={() => {

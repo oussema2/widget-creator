@@ -16,8 +16,12 @@ export interface Widget {
   frameColor: string;
   brand: any;
   callToAction: CallToAction | null;
+  dimensions: WidgetDimensions;
 }
-
+export type WidgetDimensions = {
+  width: number;
+  height: number;
+};
 export type FontType = {
   family: string;
   url: string;

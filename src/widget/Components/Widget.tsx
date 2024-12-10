@@ -7,6 +7,7 @@ import WidgetStory from "./Containers/widget-story";
 import WidgetWithModal from "./Containers/widget-with-modal";
 import { useParams } from "react-router-dom";
 import { API_URL } from "@/lib/constants";
+import WidgetIFrame from "./Containers/WidgetIFrame";
 const WidgetEntry = () => {
   // Interface for expected attributes in the <script> tag
 
@@ -31,7 +32,7 @@ const WidgetEntry = () => {
     Modal: <WidgetWithModal options={widgetData} />,
     PopUp: <WidgetPopUp options={widgetData} />,
     Story: <WidgetStory options={widgetData} />,
-    Iframe: <WidgetStory options={widgetData} />,
+    Iframe: <WidgetIFrame options={widgetData} />,
   };
   if (!widgetData) {
     return null;

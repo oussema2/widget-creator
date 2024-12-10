@@ -53,6 +53,7 @@ const initialState: WidgetState = {
     },
     position: "Right",
     videos: [],
+    dimensions: { height: 0, width: 0 },
   },
   error: null,
   loading: false,

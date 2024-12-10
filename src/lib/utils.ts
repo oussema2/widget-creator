@@ -1,7 +1,13 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import CryptoJS from "crypto-js";
-import { Dimensions } from "@/redux/types/widget.types";
+import { Dimensions, LogoPosition } from "@/redux/types/widget.types";
+import {
+  AbsolutePosition,
+  AspectRatio,
+  AspectRatioDimenstions,
+  POSITION_ATTRIBUTES,
+} from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -165,4 +171,24 @@ export function getWordDimensions(
     metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
 
   return { width, height };
+}
+export function isStringNumber(value: string): boolean {
+  return !isNaN(Number(value));
+}
+export function getAspectRatioDimensions(
+  aspectRatio: any
+): { width: number; height: number } | null {
+  if (
+    typeof aspectRatio === "string" &&
+    aspectRatio in AspectRatioDimenstions
+  ) {
+    return AspectRatioDimenstions[aspectRatio as AspectRatio];
+  }
+  return null; // Return null if the aspect ratio is invalid
+}
+export function getPositionAttribute(key: any): AbsolutePosition | null {
+  if (typeof key === "string" && key in POSITION_ATTRIBUTES) {
+    return POSITION_ATTRIBUTES[key as LogoPosition];
+  }
+  return null; // Return null if the key is invalid
 }

@@ -19,6 +19,7 @@ import {
   updateWidget,
 } from "./widgetThunks";
 import { AspectRatio } from "@/lib/constants";
+import { isStringNumber } from "@/lib/utils";
 type WidgetState = {
   data: Widget;
   loading: boolean;
@@ -79,6 +80,7 @@ const initialState: WidgetState = {
         start: 0,
       },
     ],
+    dimensions: { height: 0, width: 0 },
   },
   error: null,
   loading: false,
@@ -264,6 +266,16 @@ const widgetSlice = createSlice({
     ) => {
       state.data.videos[state.selectedVideo].caption.template = action.payload;
     },
+    setWidgetHeightDimension: (state, action: PayloadAction<string>) => {
+      state.data.dimensions.height = isStringNumber(action.payload)
+        ? Number(action.payload)
+        : 0;
+    },
+    setWidgetWidthDimension: (state, action: PayloadAction<string>) => {
+      state.data.dimensions.width = isStringNumber(action.payload)
+        ? Number(action.payload)
+        : 0;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -276,6 +288,7 @@ const widgetSlice = createSlice({
         state.loading = false;
         state.data = {
           ...action.payload,
+          dimensions: action.payload.dimensions || { height: 0, width: 0 },
           font: action.payload.font
             ? action.payload.font
             : { family: "", style: "", url: "" },
@@ -400,5 +413,7 @@ export const {
   setVideoCaptionColor,
   setVideoCaptionBackgroundColor,
   setVideoCaptionTemplate,
+  setWidgetHeightDimension,
+  setWidgetWidthDimension,
 } = widgetSlice.actions;
 export default widgetSlice.reducer;
