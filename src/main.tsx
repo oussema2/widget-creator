@@ -42,6 +42,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+console.log("entry project");
 const root = document.getElementById("root");
 if (root && root.getAttribute("data-entry-type") === "Dashboard") {
   console.log("entered 111");
@@ -53,7 +54,7 @@ if (root && root.getAttribute("data-entry-type") === "Dashboard") {
     </StrictMode>
   );
 } else if (root && root.getAttribute("data-entry-type") === "Widget") {
-  console.log("entered 222");
+  console.log("entered 222332");
 
   createRoot(root).render(
     <StrictMode>
